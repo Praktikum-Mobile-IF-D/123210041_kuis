@@ -29,9 +29,9 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.all(
               Radius.circular(8.0),
             ))),
-        // validator: (String? value) => (value != null && value.contains('@'))
-        //     ? 'Email tidak valid!'
-        //     : null,
+        validator: (String? value) => (value != null && value.contains('@'))
+            ? 'Email tidak valid!'
+            : null,
       ),
     );
   }
@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
         obscureText: true,
         enabled: true,
         onChanged: (value) {
-          email = value;
+          password = value;
         },
         decoration: InputDecoration(
             hintText: 'Password',
@@ -52,9 +52,9 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.all(
               Radius.circular(8.0),
             ))),
-        // validator: (String? value) => (value != null && value.length > 8)
-        //     ? 'Password harus lebih dari 8 karakter!'
-        //     : null,
+        validator: (String? value) => (value != null && value.length > 8)
+            ? 'Password harus lebih dari 8 karakter!'
+            : null,
       ),
     );
   }
@@ -65,16 +65,15 @@ class _LoginPageState extends State<LoginPage> {
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return BooksPage();
-            }));
             if (email == "putramukti26@gmail.com" && password == "123210041") {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return BooksPage();
               }));
             } else {
-              SnackBar snackBar =
-                  SnackBar(content: Text("Email/password tidak sesuai"));
+              SnackBar snackBar = SnackBar(
+                content: Text("Email/password tidak sesuai"),
+                backgroundColor: Colors.red,
+              );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           },
