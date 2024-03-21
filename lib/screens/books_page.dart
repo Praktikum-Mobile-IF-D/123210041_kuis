@@ -13,7 +13,9 @@ class BooksPage extends StatelessWidget {
         title: Text(
           "Data Buku",
           textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
         ),
+        backgroundColor: Colors.blue,
       ),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
