@@ -58,7 +58,7 @@ class BooksPage extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            listBuku[index].author,
+                            "Penulis : ${listBuku[index].author}",
                             style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontStyle: FontStyle.italic,
