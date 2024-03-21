@@ -11,6 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
 
@@ -20,18 +21,25 @@ class _LoginPageState extends State<LoginPage> {
       child: TextFormField(
         enabled: true,
         onChanged: (value) {
-          email = value;
+          setState(() {
+            email = value;
+          });
         },
         decoration: InputDecoration(
-            hintText: 'email',
-            contentPadding: EdgeInsets.all(8.0),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
+          hintText: 'email',
+          contentPadding: EdgeInsets.all(8.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
               Radius.circular(8.0),
-            ))),
-        validator: (String? value) => (value != null && value.contains('@'))
-            ? 'Email tidak valid!'
-            : null,
+            ),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty || !value.contains('@')) {
+            return 'Masukkan email yang valid';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -43,18 +51,25 @@ class _LoginPageState extends State<LoginPage> {
         obscureText: true,
         enabled: true,
         onChanged: (value) {
-          password = value;
+          setState(() {
+            password = value;
+          });
         },
         decoration: InputDecoration(
-            hintText: 'Password',
-            contentPadding: EdgeInsets.all(8.0),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
+          hintText: 'Password',
+          contentPadding: EdgeInsets.all(8.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
               Radius.circular(8.0),
-            ))),
-        validator: (String? value) => (value != null && value.length > 8)
-            ? 'Password harus lebih dari 8 karakter!'
-            : null,
+            ),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty || value.length < 8) {
+            return 'Password harus lebih dari 8 karakter';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -65,16 +80,19 @@ class _LoginPageState extends State<LoginPage> {
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
           onPressed: () {
-            if (email == "putramukti26@gmail.com" && password == "123210041") {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return BooksPage();
-              }));
-            } else {
-              SnackBar snackBar = SnackBar(
-                content: Text("Email/password tidak sesuai"),
-                backgroundColor: Colors.red,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            if (_formKey.currentState!.validate()) {
+              if (email == "putramukti26@gmail.com" &&
+                  password == "123210041") {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return BooksPage();
+                }));
+              } else {
+                SnackBar snackBar = SnackBar(
+                  content: Text("Email/password tidak sesuai"),
+                  backgroundColor: Colors.red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
             }
           },
           child: const Text('Login')),
@@ -84,17 +102,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Login Page"),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _emailField(),
-          _passwordField(),
-          _loginButton(context),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: Text("Login Page"),
+        ),
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _emailField(),
+              SizedBox(height: 10),
+              _passwordField(),
+              SizedBox(height: 10),
+              _loginButton(context),
+            ],
+          ),
+        ));
   }
 }
